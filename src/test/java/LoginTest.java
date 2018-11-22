@@ -26,10 +26,8 @@ public class LoginTest {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("a@b.c", "");
 
-        //Verify that page title is "LinkedIn: Log In or Sign Up"
-        Assert.assertEquals(webDriver.getTitle(), "LinkedIn: Войти или зарегистрироваться",
-                "Login page title is wrong.");
-        Assert.assertTrue(loginPage.signInButton.isDisplayed(), "SignIn button is not displayed.");
+        Assert.assertTrue(loginPage.isPageLoaded(),
+                "Login Page is not loaded.");
     }
 
     @Test
@@ -37,13 +35,13 @@ public class LoginTest {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("nastask31@gmail.com", "Betmen291293");
 
+        HomePage homePage = new HomePage(webDriver);
+
         //Verify that page title is "LinkedIn: Log In or Sign Up"
-        WebElement welcomeMessage = webDriver.findElement(
-                By.xpath("//a[@data-control-name='identity_welcome_message']"));
 
         Assert.assertTrue(webDriver.getTitle().contains("LinkedIn"),
                 "Home page title is wrong.");
-        Assert.assertTrue(welcomeMessage.isDisplayed(),
+        Assert.assertTrue(homePage.welcomeMessage.isDisplayed(),
                 "Welcome message is not displayed.");
 
 
@@ -70,6 +68,23 @@ public class LoginTest {
         Assert.assertEquals(webDriver.getTitle(), "Войти в LinkedIn",
                 "This is an invalid password. Try again or change your password.");
     }
+
+
+    @Test
+    public void negativeLeadsToLoginSubmitPage() {
+        LoginPage loginPage = new LoginPage(webDriver);
+        loginPage.login("nastyask31@@gmail.com","wrong");
+
+        WebElement loginForm = webDriver.findElement(By.xpath("//form[@class='login__form']"));
+        Assert.assertTrue(loginForm.isDisplayed(), "Login Submit page is not loeded.");
+
+        WebElement userEmailError = webDriver.findElement(By.xpath("//div[@id='error-for-username']"));
+        Assert.assertEquals(userEmailError.getText(), "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.", "userEmail Validation message is wrong.");
+
+        WebElement userPassError = webDriver.findElement(By.xpath("//div[@id='error-for-password']"));
+        Assert.assertEquals(userPassError.getText(), "");
+    }
+
 
 
 
