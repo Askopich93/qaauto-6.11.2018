@@ -34,17 +34,10 @@ public class LoginTest {
     public void successfulLoginTest() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("nastask31@gmail.com", "Betmen291293");
-
         HomePage homePage = new HomePage(webDriver);
 
-        //Verify that page title is "LinkedIn: Log In or Sign Up"
-
-        Assert.assertTrue(webDriver.getTitle().contains("LinkedIn"),
-                "Home page title is wrong.");
-        Assert.assertTrue(homePage.welcomeMessage.isDisplayed(),
+        Assert.assertTrue(homePage.isPageLoaded(),
                 "Welcome message is not displayed.");
-
-
     }
 
     @Test
@@ -74,19 +67,14 @@ public class LoginTest {
     public void negativeLeadsToLoginSubmitPage() {
         LoginPage loginPage = new LoginPage(webDriver);
         loginPage.login("nastyask31@@gmail.com","wrong");
+        LoginSubmitPage loginSubmitPage = new  LoginSubmitPage(webDriver);
 
-        WebElement loginForm = webDriver.findElement(By.xpath("//form[@class='login__form']"));
-        Assert.assertTrue(loginForm.isDisplayed(), "Login Submit page is not loeded.");
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loeded.");
 
-        WebElement userEmailError = webDriver.findElement(By.xpath("//div[@id='error-for-username']"));
-        Assert.assertEquals(userEmailError.getText(), "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.", "userEmail Validation message is wrong.");
+        Assert.assertEquals(loginSubmitPage.getUserEmailError(), "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.", "userEmail Validation message is wrong.");
 
-        WebElement userPassError = webDriver.findElement(By.xpath("//div[@id='error-for-password']"));
-        Assert.assertEquals(userPassError.getText(), "");
+        Assert.assertEquals(loginSubmitPage.getUserPassError(), "");
     }
-
-
-
 
 
 }
