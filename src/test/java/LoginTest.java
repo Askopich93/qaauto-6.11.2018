@@ -1,6 +1,4 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -33,11 +31,11 @@ public class LoginTest {
     @Test
     public void successfulLoginTest() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("nastask31@gmail.com", "Betmen291293");
-        HomePage homePage = new HomePage(webDriver);
+        HomePage homePage = loginPage.loginToHome("nastask31@gmail.com", "Betmen291293");
 
+        //HomePage homePage = new HomePage(webDriver);
         Assert.assertTrue(homePage.isPageLoaded(),
-                "Welcome message is not displayed.");
+                "Welcome message is not loaded.");
     }
 
     @Test
@@ -66,15 +64,14 @@ public class LoginTest {
     @Test
     public void negativeLeadsToLoginSubmitPage() {
         LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("nastyask31@@gmail.com","wrong");
-        LoginSubmitPage loginSubmitPage = new  LoginSubmitPage(webDriver);
+        //LoginSubmitPage loginSubmitPage = new  LoginSubmitPage(webDriver);
 
-        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loeded.");
+        LoginSubmitPage loginSubmitPage = loginPage.loginToLoginSubmit("nastyask31@@gmail.com","wrong");
+
+        Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded.");
 
         Assert.assertEquals(loginSubmitPage.getUserEmailError(), "Этот адрес эл. почты не зарегистрирован в LinkedIn. Повторите попытку.", "userEmail Validation message is wrong.");
 
         Assert.assertEquals(loginSubmitPage.getUserPassError(), "");
     }
-
-
 }
