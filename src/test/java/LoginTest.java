@@ -33,38 +33,14 @@ public class LoginTest {
         LoginPage loginPage = new LoginPage(webDriver);
         HomePage homePage = loginPage.loginToHome("nastask31@gmail.com", "Betmen291293");
 
-        //HomePage homePage = new HomePage(webDriver);
         Assert.assertTrue(homePage.isPageLoaded(),
                 "Welcome message is not loaded.");
-    }
-
-    @Test
-    public void invalidEmailLoginTest() {
-        LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("nastask31#@gmail.com","Betmen291293");
-
-        //Verify that page title is "LinkedIn: Log In or Sign Up"
-        Assert.assertEquals(webDriver.getTitle(), "Войти в LinkedIn",
-                "This email address Mail is not registered with LinkedIn. Try again.");
-
-
-    }
-
-    @Test
-    public void invalidPasswordLoginTest() {
-        LoginPage loginPage = new LoginPage(webDriver);
-        loginPage.login("nastyask31@gmail.com","Betmen29129376533");
-
-        //Verify that page title is "LinkedIn: Log In or Sign Up"
-        Assert.assertEquals(webDriver.getTitle(), "Войти в LinkedIn",
-                "This is an invalid password. Try again or change your password.");
     }
 
 
     @Test
     public void negativeLeadsToLoginSubmitPage() {
         LoginPage loginPage = new LoginPage(webDriver);
-        //LoginSubmitPage loginSubmitPage = new  LoginSubmitPage(webDriver);
 
         LoginSubmitPage loginSubmitPage = loginPage.loginToLoginSubmit("nastyask31@@gmail.com","wrong");
 
