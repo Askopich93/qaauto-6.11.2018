@@ -22,32 +22,24 @@ public class LoginPage {
         PageFactory.initElements(webDriver,this);
     }
 
-
-    public LoginSubmitPage loginToLoginSubmit(String userEmail, String userPass) {
+    public <T> T  login(String userEmail, String userPass){
         emailField.sendKeys(userEmail);
         passwordField.sendKeys(userPass);
         signInButton.click();
-        return new LoginSubmitPage(webDriver);
-    }
-
-    public HomePage loginToHome(String userEmail, String userPass) {
-        emailField.sendKeys(userEmail);
-        passwordField.sendKeys(userPass);
-        signInButton.click();
-        return new HomePage(webDriver);
-    }
-
-    public LoginPage login(String userEmail, String userPass) {
-        emailField.sendKeys(userEmail);
-        passwordField.sendKeys(userPass);
-        signInButton.click();
-        return new LoginPage(webDriver);
+        if (webDriver.getCurrentUrl().contains("feed")) {
+            return (T) new HomePage(webDriver);
+        }
+        if (webDriver.getCurrentUrl().contains("login-submit")) {
+            return (T) new LoginSubmitPage(webDriver);
+        }
+        else {
+            return (T) new LoginPage(webDriver);
+        }
     }
 
     public boolean isPageLoaded(){
-       return signInButton.isDisplayed()
-               && webDriver.getTitle().equals("LinkedIn: Войти или зарегистрироваться")
-               && webDriver.getCurrentUrl().equals("https://www.linkedin.com/");
+        return signInButton.isDisplayed()
+                && webDriver.getTitle().equals("LinkedIn: Войти или зарегистрироваться")
+                && webDriver.getCurrentUrl().equals("https://www.linkedin.com/");
     }
-
 }

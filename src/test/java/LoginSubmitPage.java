@@ -1,27 +1,23 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LoginSubmitPage {
     private WebDriver webDriver;
 
+    @FindBy(xpath = "//form[@class='login__form']")
     private WebElement loginForm;
+
+    @FindBy(xpath = "//div[@id='error-for-username']")
     private WebElement userEmailError;
+
+    @FindBy(xpath = "//div[@id='error-for-password']")
     private WebElement userPassError;
 
     public LoginSubmitPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        initElements();
-
-    }
-
-    private void initElements() {
-        loginForm = webDriver.findElement(
-                By.xpath("//form[@class='login__form']"));
-        userEmailError = webDriver.findElement(
-                By.xpath("//div[@id='error-for-username']"));
-        userPassError = webDriver.findElement(
-                By.xpath("//div[@id='error-for-password']"));
+        PageFactory.initElements(webDriver,this);
     }
 
     public boolean isPageLoaded() {

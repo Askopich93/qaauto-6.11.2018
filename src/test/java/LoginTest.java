@@ -31,18 +31,17 @@ public class LoginTest {
     @Test
     public void successfulLoginTest() {
         LoginPage loginPage = new LoginPage(webDriver);
-        HomePage homePage = loginPage.loginToHome("nastask31@gmail.com", "Betmen291293");
+        HomePage homePage = loginPage.login("nastask31@gmail.com", "Betmen291293");
 
         Assert.assertTrue(homePage.isPageLoaded(),
                 "Welcome message is not loaded.");
     }
 
-
     @Test
     public void negativeLeadsToLoginSubmitPage() {
         LoginPage loginPage = new LoginPage(webDriver);
 
-        LoginSubmitPage loginSubmitPage = loginPage.loginToLoginSubmit("nastyask31@@gmail.com","wrong");
+        LoginSubmitPage loginSubmitPage = loginPage.login("nastyask31@@gmail.com","wrong");
 
         Assert.assertTrue(loginSubmitPage.isPageLoaded(), "Login Submit page is not loaded.");
 
@@ -50,4 +49,5 @@ public class LoginTest {
 
         Assert.assertEquals(loginSubmitPage.getUserPassError(), "");
     }
+
 }
