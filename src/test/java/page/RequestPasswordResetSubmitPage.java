@@ -1,0 +1,43 @@
+package page;
+
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import util.GMailService;
+
+public class RequestPasswordResetSubmitPage extends page.BasePage {
+
+    @FindBy(xpath = "//button[@id='resend-url']")
+    private WebElement resendLinkButton;
+
+    public RequestPasswordResetSubmitPage(WebDriver webDriver) {
+        this.webDriver = webDriver;
+        PageFactory.initElements(webDriver, this);
+    }
+
+    public boolean isPageLoaded() {
+        return resendLinkButton.isDisplayed()
+                && webDriver.getTitle().contains("Please check your mail for reset password link")
+                && webDriver.getCurrentUrl().contains("checkpoint/rp/request-password-reset-submit");
+    }
+
+    public page.SetNewPasswordPage navigateToLinkFromEmail() {
+
+        String messageSubject = "here's the link to reset your password";
+        String messageTo = "nastask31@gmail.com";
+        String messageFrom = "security-noreply@linkedin.com";
+
+        String message = gMailService.waitMessage(
+                messageSubject, messageTo, messageFrom, 180);
+        System.out.println("Content: " + message);
+
+        String resetPasswordLink = StringUtils.substringBetween (message, "href=\"", "\" style=")
+                .replace("amp;", "");
+        webDriver.get(resetPasswordLink);
+
+        return new page.SetNewPasswordPage(webDriver);
+
+    }
+}
