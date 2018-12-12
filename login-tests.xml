@@ -3,6 +3,7 @@
 <suite name="Linkedin Login tests">
 
     <test name="Positive">
+        <parameter name="browserName" value="chrome"/>
         <classes>
             <class name="test.LoginTest">
                 <methods>
@@ -14,6 +15,7 @@
     </test>
 
     <test name="Negative">
+        <parameter name="browserName" value="firefox"/>
         <classes>
             <class name="test.LoginTest">
                 <methods>
